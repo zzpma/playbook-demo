@@ -1,0 +1,49 @@
+{% extends "auth_base.html" %}
+
+{% block content %}
+
+<div class="auth-visual">
+    <div class="visual-content">
+        <h3>PLAYBOOK</h3>
+        <h1>Shohoku Bulls<br>Sports Club</h1>
+        <p>Welcome! Access exclusive club resources, training schedules, and member news.</p>
+    </div>
+</div>
+
+<div class="login-container">
+    <div class="form-wrapper">
+        <div class="form-header">
+            <h2>Sign in</h2>
+            <p>Connect with your team and track your progress</p>
+        </div>
+
+        <form method="POST" 
+            action="{% url 'login' %}" 
+            hx-post="{% url 'login' %}" 
+            hx-target="this"
+            hx-indicator="#loading-spinner">
+            
+            {% csrf_token %}
+
+            {% include 'accounts/login_form_fields.html' %}
+
+        </form>
+
+        <div class="divider">
+            <span>or continue with</span>
+        </div>
+
+        <a href="/accounts/google/login/" style="text-decoration: none;">
+            <button class="google-btn">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" width="20" height="20">
+                Sign in with Google
+            </button>
+        </a>
+
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="{% url 'register' %}">Sign up for Playbook</a></p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

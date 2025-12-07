@@ -1,0 +1,40 @@
+<div id="form-fields-container">
+
+    {% for field in form %}
+        
+        {% if field.name == 'remember' or field.name == 'remember_me' %}
+            <div class="checkbox-container">
+                {{ field }}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            </div>
+        {% else %}
+            <div style="margin-bottom: 15px;">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }} 
+            </div>
+        {% endif %}
+        
+        {% for error in field.errors %}
+            <div style="color: #d32f2f; font-size: 12px; margin-top: 5px;">{{ error }}</div>
+        {% endfor %}
+
+    {% endfor %}
+
+    {% if form.non_field_errors %}
+    <div id="alerts" style="padding: 10px; background-color: #fce4e4; color: #c62828; border: 1px solid #c62828; border-radius: 4px; margin-bottom: 15px;">
+        <strong>Login Failed:</strong> 
+        {% for error in form.non_field_errors %}
+            <p style="margin: 5px 0 0 0; font-size: 14px;">- {{ error }}</p>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div id="alerts" style="margin-bottom: 15px;"></div>
+    {% endif %}
+</div>
+
+<button type="submit">
+    Login
+    <svg id="loading-spinner" class="htmx-indicator" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+    </svg>
+</button>

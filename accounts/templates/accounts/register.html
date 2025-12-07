@@ -1,0 +1,34 @@
+{% extends "auth_base.html" %}
+
+{% block content %}
+
+<div style="max-width: 600px; margin: 4rem auto; text-align: center;">
+
+    <h1 style="font-size: 2.5rem; margin-bottom: 1rem; font-weight: bold;">
+        Registration Coming Soon!
+    </h1>
+
+    <p style="font-size: 1.2rem; color: #555; margin-bottom: 2rem;">
+        We're currently finalizing our member onboarding system.
+        In the meantime, you can access this demo using your Google account.
+    </p>
+
+    <a href="/accounts/google/login/" style="text-decoration: none;">
+        <button style="
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            border: none;
+            background-color: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="20">
+            Sign in with Google
+        </button>
+    </a>
+
+</div>
+
+{% endblock %}

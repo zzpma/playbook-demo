@@ -1,1 +1,33 @@
+# Environment variables
 .env
+
+# Python cache / bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Django SQLite database
+db.sqlite3
+
+# Static build output (generated in production)
+staticfiles/
+
+# Logs
+*.log
+
+# Virtual environments
+venv/
+.env/
+env/
+ENV/
+.venv/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE-specific
+.vscode/
+.idea/
+*.swp
