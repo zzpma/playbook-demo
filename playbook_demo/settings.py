@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import environ
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -135,25 +136,24 @@ SOCIALACCOUNT_PROVIDERS = {
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-if DEBUG:
+DATABASE_URL = env('DATABASE_URL', default=None)
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True  # Required on Railway
+        )
+    }
+else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': env('PGDATABASE', default=None),
-            'USER': env('PGUSER', default=None),
-            'PASSWORD': env('PGPASSWORD', default=None),
-            'HOST': env('PGHOST', default=None),
-            'PORT': env('PGPORT', default=None),
-        }
-    }
-
 
 
 # Password validation
