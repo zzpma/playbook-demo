@@ -1,1 +1,1 @@
-web: gunicorn playbook_demo.wsgi
+web: python manage.py migrate && gunicorn playbook_demo.wsgi
