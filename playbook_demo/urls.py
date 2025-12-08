@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),  # allauth routes, including Google
     path('', include('accounts.urls')),  # login, signup, dashboard
+    path('', include('core.urls')),
 ]
