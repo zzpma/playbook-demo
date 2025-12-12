@@ -79,7 +79,7 @@
             {% for payment in payments %}
             <tr>
                 <td>{{ payment.created_at|date:"M d, Y H:i" }}</td>
-                <td>₱{{ payment.amount }}</td>
+                <td>${{ payment.amount }}</td>
                 <td>
                     <span class="badge
                         {% if payment.status == 'PAID' %}bg-success
