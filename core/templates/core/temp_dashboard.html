@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Playbook Demo — Temporary Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:#f8fafc; color:#111; }
+    .container { max-width:980px; margin:28px auto; padding:18px; }
+    header { display:flex; align-items:center; gap:16px; }
+    .logo { width:56px; height:56px; border-radius:8px; background:#c6edff; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; }
+    .card { background:white; border-radius:12px; padding:20px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); margin-top:18px; }
+    .feature { padding:14px; border-radius:10px; border:1px solid #f0f0f3; margin-bottom:10px; }
+    .muted { color:#556; }
+    .cta { display:inline-block; background:#47c4b6; color:white; padding:10px 14px; border-radius:8px; text-decoration:none; font-weight:700; }
+    code { background:#f3f4f6; padding:4px 6px; border-radius:6px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; }
+    .program-list { margin-top:10px; }
+    .prog { border:1px solid #f1f1f4; padding:10px; border-radius:8px; display:flex; gap:12px; align-items:center; margin-bottom:8px; }
+    .prog .meta { flex:1; }
+    .small { font-size:0.95rem; color:#666; }
+    .link { text-decoration:none; color:#0645AD; font-weight:600; }
+    .hint { margin-top:8px; color:#444; }
+  </style>
+</head>
+<body>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0px">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+  <div class="container">
+    <header>
+      <div class="logo">🏀</div>
+      <div>
+        <h1 style="margin:0">Welcome, {{ display_name }}!</h1>
+        <div class="muted">This is a temporary dashboard page that shows live features of Playbook Demo by Philip Ma</div>
+      </div>
+    </header>
+
+    <div class="card">
+      <h2 style="margin-top:0">1. Account creation using Google Auth</h2>
+      <p class="muted">You have tested this feature to get here. Google Auth is only for client accounts (organizers/coaches) such as yours. Players/parents do not use Google Auth for registration — the public registration is passwordless and frictionless.</p>
+    </div>
+
+    <div class="card">
+      <h2>2. Fast Program Creation</h2>
+      <p class="muted">The button below will take you to the Program Creation page for Playbook clients. Each program you create will automatically be turned into a Stripe Product & Price using the demo Stripe test account configured in settings.</p>
+      <p>
+        <a href="/programs/create/" class="cta" style="margin-right:10px">Create Program</a>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>3. Fast Player Registration</h2>
+
+      <h3 class="small">a. List of programs</h3>
+      <p class="muted">Below are the programs you and other Playbook Demo clients have created and their associated public registration links. Test one out by opening the link in an incognito window and filling the form with dummy data.</p>
+
+      <div class="program-list">
+        {% if program_links %}
+          {% for p in program_links %}
+            <div class="prog">
+              <div class="meta">
+                <div style="font-weight:700">{{ p.name }}</div>
+                <div class="small">Price: ₱{{ p.price }} {% if p.deadline %}• Deadline: {{ p.deadline }}{% endif %}</div>
+                <div class="small">Public link: <a class="link" href="{{ p.link }}" target="_blank" rel="noopener noreferrer">{{ p.link }}</a></div>
+              </div>
+              <div>
+                <a href="{{ p.link }}" class="cta" style="background:#0b6; text-decoration:none">Open link</a>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="muted">No programs found. Create one using the button above or in Admin.</div>
+        {% endif %}
+      </div>
+
+      <h3 class="small" style="margin-top:12px">b. Checkout Page</h3>
+      <p class="muted">After filling out the registration form (pretend to be a member/parent), you'll be taken to a Stripe Checkout page. Use the test card <code>4242 4242 4242 4242</code> and any random expiry/CVC values.</p>
+
+      <h3 class="small" style="margin-top:12px">c. Webhook / Payments</h3>
+      <p class="muted">Payments are saved as <strong>PENDING</strong> before redirecting to Stripe Checkout. The webhook will finalize registrations when the <code>checkout.session.completed</code> event is received and will create the Registration record in the system. Click the button below to see the payment history.</p>
+      <p>
+        <a href="/payments/history/" class="cta" style="margin-right:10px">View Payment History</a>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>4. Scheduling</h2>
+      <p class="muted">— coming soon! —</p>
+    </div>
+
+    <div class="card">
+      <h2>5. Agentic AI-powered Chatbot</h2>
+      <p class="muted">— coming soon! —</p>
+    </div>
+  </div>
+</body>
+</html>

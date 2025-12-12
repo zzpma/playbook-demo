@@ -1,0 +1,112 @@
+{% load static %}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Create Program — Playbook</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style>
+        body {
+            background: var(--input-bg);
+            font-family: var(--font-family);
+            color: var(--primary-text);
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 40px auto;
+            background: var(--white);
+            padding: 28px 32px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 26px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: var(--primary-clr);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--primary-clr);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .input, .textarea {
+            width: 100%;
+            background: var(--input-bg);
+            padding: 12px 14px;
+            font-size: 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .input:focus, .textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--focus-ring);
+        }
+
+        .btn-primary {
+            background: var(--secondary-clr);
+            color: var(--white);
+            padding: 12px 22px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 18px;
+            color: var(--primary-clr);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .field-block {
+            margin-bottom: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'temp_dashboard' %}" class="back-link">← Back to Dashboard</a>
+
+        <h1>Create a Program</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="field-block">
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div style="color:#c00; margin-top:4px;">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn-primary">Create Program</button>
+        </form>
+
+    </div>
+
+</body>
+</html>

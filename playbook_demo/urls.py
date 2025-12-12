@@ -22,4 +22,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),  # allauth routes, including Google
     path('', include('accounts.urls')),  # login, signup, dashboard
     path('', include('core.urls')),
+    path('programs/', include('programs.urls')),
+    path('payments/', include('payments.urls')),
 ]
