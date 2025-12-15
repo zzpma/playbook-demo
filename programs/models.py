@@ -4,7 +4,7 @@ from django.utils.text import slugify
 import uuid
 
 class Program(models.Model):
-    name = models.CharField(
+    title = models.CharField(
         max_length=255,
         null=True,
     )
@@ -18,12 +18,21 @@ class Program(models.Model):
         max_digits=10,
         decimal_places=2
     )
-    registration_deadline = models.DateField(
+    is_reg_open = models.BooleanField(default=True)
+    start_time = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+    reg_deadline = models.DateTimeField(
         null=True,
         blank=True
     )
     location = models.CharField(
         max_length=255,
+        blank=True
+    )
+    category = models.CharField(
+        max_length=100,
         blank=True
     )
     
@@ -54,7 +63,7 @@ class Program(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)[:200]
+            self.slug = slugify(self.title)[:200]
         super().save(*args, **kwargs)
 
     def get_public_link(self, request=None):
@@ -64,7 +73,7 @@ class Program(models.Model):
         return link
 
     def __str__(self):
-        return self.name
+        return self.title
 
 class Session(models.Model):
     program = models.ForeignKey(
@@ -118,4 +127,3 @@ class Registration(models.Model):
 
     def __str__(self):
         return f"{self.participant_name} — {self.program.name}"
-    

@@ -108,20 +108,24 @@ WSGI_APPLICATION = 'playbook_demo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASE_URL = env('DATABASE_URL', default=None)
 
-DATABASE_URL = env('DATABASE_URL', default=False)
 if DATABASE_URL:
-    DATABASES['default'] = dj_database_url.config(
-        default=DATABASE_URL,
-        conn_max_age=600,
-        ssl_require=True,  # Required on Railway
-    )
+	DATABASES = {
+		'default': dj_database_url.config(
+			default=DATABASE_URL,
+			conn_max_age=600,
+			conn_health_checks=True,
+			ssl_require=True  # Required on Railway
+		)
+	}
+else:
+	DATABASES = {
+		'default': {
+			'ENGINE': 'django.db.backends.sqlite3',
+			'NAME': BASE_DIR / 'db.sqlite3',
+		}
+	}
 
 
 # Password validation
@@ -182,7 +186,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/programs/'
 LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_ERROR_URL = '/login/'
 SOCIALACCOUNT_LOGIN_ON_GET = True  # Skip the intermediate page

@@ -1,0 +1,11 @@
+<label class="toggle">
+    <input
+        type="checkbox"
+        {% if program.is_reg_open %}checked{% endif %}
+        hx-post="{% url 'programs:toggle_registration' program.id %}"
+        hx-target="closest td"
+        hx-swap="innerHTML"
+    >
+    <span></span>
+</label>
+

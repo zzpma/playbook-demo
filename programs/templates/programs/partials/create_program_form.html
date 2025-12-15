@@ -1,0 +1,59 @@
+<div class="create-program card">
+    <button 
+        type="button"
+        class="modal-close"
+        onclick="this.closest('dialog').close()">
+        ✕
+    </button>
+
+    <h3>Create a Program</h3>
+
+    <form 
+        hx-post="{% url 'programs:create_program' %}" 
+        hx-target="#programs-table-body" 
+        hx-swap="beforeend"
+        hx-on::after-request="if(event.detail.successful) this.closest('dialog').close()"
+    >
+        {% csrf_token %}
+
+        <div class="field-row">
+            <label>Title</label>
+            {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+
+        <div class="field-row">
+            <label>Description</label>
+            {{ form.description }}
+            {{ form.description.errors }}
+        </div>
+
+        <div class="field-row split-row">
+            <div class="field-col">
+                {{ form.price.label_tag }}
+                {{ form.price }}
+                {{ form.price.errors }}
+            </div>
+            <div class="field-col">
+                {{ form.location.label_tag }}
+                {{ form.location }}
+                {{ form.location.errors }}
+            </div>
+        </div>
+        
+        <div class="field-row split-row">
+            <div class="field-col">
+                {{ form.start_time.label_tag }}
+                {{ form.start_time }}
+                {{ form.start_time.errors }}
+            </div>
+            <div class="field-col">
+                <label>Registration Deadline</label>
+                {{ form.reg_deadline }}
+                {{ form.reg_deadline.errors }}
+            </div>
+        </div>
+
+        <button type="submit" class="btn-primary">Save Program</button>
+    </form>
+</div>

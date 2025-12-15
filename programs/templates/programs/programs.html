@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- MAIN TABS -->
+<div class="programs-tabs">
+    <a class="tab">Categories <span class="count">12</span></a>
+    <a class="tab active">Program Packages <span class="count">47</span></a>
+    <a class="tab">Seasons <span class="count">4</span></a>
+	<a class="tab">Clubs <span class="count">3</span></a>
+    <a class="tab">Memberships <span class="count">0</span></a>
+    <a class="tab">Passes <span class="count">0</span></a>
+    <a class="tab">Add Ons <span class="count">0</span></a>
+    <a class="tab">Reservation <span class="count">0</span></a>
+</div>
+
+<!-- TOOLBAR -->
+<div class="programs-toolbar">
+
+   	<select class="select">
+        <option>All Categories</option>
+    </select>
+
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search Program Packages">
+    </div>
+
+    <select class="select">
+        <option>Actions</option>
+    </select>
+
+    <button class="btn outline">
+        <i class="fas fa-copy"></i>
+		Clone
+    </button>
+
+    <button class="btn outline">
+        <i class="fas fa-sliders-h"></i>
+		Filter
+    </button>
+
+	<div class="toolbar-spacer"></div>
+
+	<button
+		class="btn primary"
+		onclick="document.getElementById('create-program-dialog').showModal()"
+	>
+		+ Create Program
+	</button>
+</div>
+
+<dialog id="create-program-dialog" class="program-dialog">
+    {% include "programs/partials/create_program_form.html" %}
+</dialog>
+
+<!-- TABLE -->
+<div class="programs-table-wrapper">
+    <table class="programs-table">
+		<thead>
+			<tr>
+				<th><input type="checkbox"> All</th>
+				<th>Title</th>
+				<th># Sessions</th>
+				<th>Reg Open</th>
+				<th>Start Time</th>
+				<th>Registration Deadline</th>
+				<th>Form Link</th>
+			</tr>
+		</thead>
+		<tbody id="programs-table-body">
+			{% for program in programs %}
+				{% include "programs/partials/program_row.html" %}
+			{% empty %}
+				<tr>
+					<td colspan="7" style="text-align:center; padding:40px;">
+						No programs yet
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}

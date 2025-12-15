@@ -5,16 +5,30 @@ class ProgramForm(forms.ModelForm):
     class Meta:
         model = Program
         fields = [
-            "name",
+            "title",
             "description",
             "price",
-            "registration_deadline",
+            "start_time",
+            "reg_deadline",
             "location",
         ]
         widgets = {
-            "name": forms.TextInput(attrs={"class": "input"}),
-            "description": forms.Textarea(attrs={"class": "textarea", "rows": 4}),
-            "price": forms.NumberInput(attrs={"class": "input", "step": "0.01"}),
-            "registration_deadline": forms.DateInput(attrs={"class": "input", "type": "date"}),
-            "location": forms.TextInput(attrs={"class": "input"}),
+            "title": forms.TextInput(
+                attrs={"class": "input"}
+            ),
+            "description": forms.Textarea(
+                attrs={"class": "textarea", "rows": 4}
+            ),
+            "price": forms.NumberInput(
+                attrs={"class": "input", "step": "0.01"}
+            ),
+            "start_time": forms.DateTimeInput(
+                attrs={"class": "input", "type": "datetime-local"}
+            ),
+            "reg_deadline": forms.DateTimeInput(
+                attrs={"class": "input", "type": "datetime-local"}
+            ),
+            "location": forms.TextInput(
+                attrs={"class": "input"}
+            ),
         }

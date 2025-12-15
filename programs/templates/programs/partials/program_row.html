@@ -1,0 +1,59 @@
+<tr id="program-{{ program.id }}">
+
+    <!-- Actions -->
+    <td class="actions">
+        <input type="checkbox" name="selected_programs" value="{{ program.id }}">
+        <i class="fas fa-pen" title="Edit"></i>
+        <i class="fas fa-list" title="Sessions"></i>
+        <i class="fas fa-flask" title="Test"></i>
+    </td>
+
+    <!-- Title -->
+    <td>
+        {{ program.title }}
+    </td>
+
+    <!-- # Sessions (placeholder for now) -->
+    <td class="centered">
+        {{ program.sessions.count|default:"0" }}
+    </td>
+
+    <!-- Reg Open toggle -->
+    <td>
+        {% include "programs/partials/reg_toggle.html" %}
+    </td>
+
+
+
+    <!-- Start Time -->
+    <td>
+        {% if program.start_time %}
+            {{ program.start_time|date:"M d, Y · g:i A" }}
+        {% else %}
+            —
+        {% endif %}
+    </td>
+
+    <!-- Registration Deadline -->
+    <td>
+        {% if program.reg_deadline %}
+            {{ program.reg_deadline|date:"M d, Y · g:i A" }}
+        {% else %}
+            —
+        {% endif %}
+
+    </td>
+        <td>
+        {% if program.public_id %}
+            <a
+                class="btn outline reg-form-link"
+                href="register/{{program.public_id}}/"
+                target="_blank"
+            >
+                Visit >
+            </a>
+        {% else %}
+            —
+        {% endif %}
+    </td>
+</tr>

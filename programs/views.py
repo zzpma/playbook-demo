@@ -1,67 +1,88 @@
 # programs/views.py
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.urls import reverse
+from django.http import HttpResponse
 import stripe
 
 from .forms import ProgramForm
 from .models import Program, Registration
 from payments.models import Payment
 
+
+@login_required
+def programs(request):
+    programs = Program.objects.all().prefetch_related("sessions")
+
+    return render(
+        request,
+        "programs/programs.html",
+        {"programs": programs, "form": ProgramForm()}
+    )
+
+
 @login_required
 def create_program(request):
-    if request.method == "GET":
-        return render(
-            request,
-            "programs/create_program.html",
-            {"form": ProgramForm()}
-        )
+    if request.method != "POST":
+        return HttpResponse(status=405)
 
-    # --- POST ---
     form = ProgramForm(request.POST)
 
     if not form.is_valid():
+        # Re-render the form inside the dialog
         return render(
             request,
-            "programs/create_program.html",
-            {"form": form}
+            "programs/partials/create_program_form.html",
+            {"form": form},
+            status=400
         )
 
     program = form.save(commit=False)
     program.created_by = request.user
     program.save()
 
-    # Create Stripe Product + Price
+    # --- Stripe (unchanged logic) ---
     try:
         product = stripe.Product.create(
-            name=program.name,
+            name=program.title,
             description=program.description,
             metadata={"program_id": program.id}
         )
         price = stripe.Price.create(
             product=product.id,
-            unit_amount=int(float(program.price) * 100),
+            unit_amount=int(program.price * 100),
             currency="usd"
         )
-
-        # Save Stripe IDs if present
-        if hasattr(program, "stripe_product_id"):
-            program.stripe_product_id = product.id
-        if hasattr(program, "stripe_price_id"):
-            program.stripe_price_id = price.id
-
+        program.stripe_product_id = product.id
+        program.stripe_price_id = price.id
         program.save()
+    except Exception:
+        messages.warning(request, "Program created, but Stripe setup failed.")
 
-    except Exception as e:
-        print("Stripe creation error:", e)
-        messages.warning(
-            request,
-            "Program created, but Stripe product could not be created."
-        )
+    # 🔥 HTMX response: return ONE table row
+    return render(
+        request,
+        "programs/partials/program_row.html",
+        {"program": program},
+        status=201
+    )
 
-    messages.success(request, "Program created successfully!")
-    return redirect("temp_dashboard")
+
+@login_required
+@require_POST
+def toggle_registration(request, program_id):
+    program = get_object_or_404(Program, id=program_id)
+
+    program.is_reg_open = not program.is_reg_open
+    program.save(update_fields=["is_reg_open"])
+
+    return render(
+        request,
+        "programs/partials/reg_toggle.html",
+        {"program": program},
+    )
 
 
 @login_required

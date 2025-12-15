@@ -8,10 +8,10 @@ class SessionInline(admin.TabularInline):
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
-    list_display = ("name", "price", "registration_deadline", "created_by")
+    list_display = ("title", "price", "reg_deadline", "created_by")
     inlines = [SessionInline]
     readonly_fields = ("public_id",)
-    prepopulated_fields = {"slug": ("name",)}
+    prepopulated_fields = {"slug": ("title",)}
 
 
 @admin.register(Registration)
